@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["442VTS5AZM.com.valentinocavaricci.Bragofficial"],
+        "components": [
+          { "/": "/i/*", "comment": "invite links open the app" }
+        ]
+      }
+    ]
+  }
+}
