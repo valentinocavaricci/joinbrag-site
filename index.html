@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BRAG — your real life</title>
+<meta name="description" content="BRAG is where your real life gets its proof. Boards organize your life. Brags prove the work. Arcs tell the story. Shared with your realest 14, not the world.">
+<meta property="og:title" content="BRAG — your real life">
+<meta property="og:description" content="Wherever there's movement in your life, post about it. Big or small.">
+<style>
+  :root {
+    --canvas: #0a0b0c;
+    --surface: #0e0f11;
+    --text: #f5f5f5;
+    --text-2: rgba(255,255,255,0.66);
+    --text-3: rgba(255,255,255,0.42);
+    --border: rgba(255,255,255,0.08);
+    --green: #7ddb9a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--canvas);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 24px; }
+
+  header { padding: 26px 0 0; }
+  .wordmark { font-size: 28px; font-weight: 600; letter-spacing: -0.5px; }
+
+  .hero { padding: 96px 0 72px; }
+  .hero h1 {
+    font-size: clamp(40px, 9vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    font-weight: 700;
+  }
+  .hero h1 span { color: var(--text-3); }
+  .hero p {
+    margin-top: 24px;
+    font-size: 19px;
+    color: var(--text-2);
+    max-width: 480px;
+  }
+  .cta {
+    display: inline-block;
+    margin-top: 36px;
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 15px 30px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .cta-note { display: block; margin-top: 12px; font-size: 13px; color: var(--text-3); }
+
+  .pillars { padding: 24px 0 40px; display: grid; gap: 14px; }
+  .pillar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .pillar .eyebrow {
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .pillar h2 { font-size: 21px; margin-top: 6px; font-weight: 600; }
+  .pillar p { margin-top: 8px; color: var(--text-2); font-size: 15.5px; }
+  .pillar h2 .green { color: var(--green); }
+
+  .manifesto { padding: 56px 0 80px; }
+  .manifesto p {
+    font-size: clamp(22px, 5vw, 30px);
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+  .manifesto p span { color: var(--text-3); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 56px;
+    font-size: 14px;
+    color: var(--text-3);
+  }
+  footer a { color: var(--text-2); text-decoration: none; margin-right: 20px; }
+  footer a:hover { color: var(--text); }
+  footer .fine { margin-top: 14px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="wordmark">brag</div>
+  </header>
+
+  <section class="hero">
+    <h1>This is BRAG,<br>your real life.<span></span></h1>
+    <p>Wherever there's movement in your life — post about it. Big or small.
+       The gym streak, the first chapter, the burnt dinner that almost worked.
+       Real wins, in a real life, for your realest people.</p>
+    <a class="cta" href="mailto:valcavaricci@icloud.com?subject=BRAG%20beta">Get on the beta</a>
+    <span class="cta-note">iPhone · App Store coming soon</span>
+  </section>
+
+  <section class="pillars">
+    <div class="pillar">
+      <div class="eyebrow">Boards</div>
+      <h2>Your life has areas. Give them a home.</h2>
+      <p>Gym. Faith. Music. The junk drawer. Boards organize your life the
+         way it actually is — in corners.</p>
+    </div>
+    <div class="pillar">
+      <div class="eyebrow">Brags</div>
+      <h2>Proof over polish.</h2>
+      <p>A brag is a receipt: words, a photo, both. Not a highlight reel —
+         a record that you showed up.</p>
+    </div>
+    <div class="pillar">
+      <div class="eyebrow">Arcs</div>
+      <h2>Chapters with a finish line.</h2>
+      <p>Chasing something? An arc holds the whole story — every check-in
+         from day one to <span class="green">done</span>.</p>
+    </div>
+    <div class="pillar">
+      <div class="eyebrow">The clique</div>
+      <h2>Fourteen people, max.</h2>
+      <p>Your realest people see your real life. No follower counts, no
+         public likes, no performing for strangers. Ever.</p>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <p>Bragging gets a bad name because people brag about fake lives.
+       <span>Brag about your real one.</span></p>
+  </section>
+
+  <footer>
+    <a href="/privacy.html">Privacy</a>
+    <a href="mailto:valcavaricci@icloud.com">Support</a>
+    <div class="fine">© 2026 BRAG · Made by Valentino Cavaricci</div>
+  </footer>
+</div>
+
+</body>
+</html>
