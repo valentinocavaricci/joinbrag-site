@@ -239,9 +239,8 @@
 <script>
   // The login deck, on the web: two stacked layers crossfade through
   // the clips — random order, never the same twice in a row.
-  var clips = ["media/auth-login-1.mp4", "media/auth-login-3.mp4",
-               "media/auth-login-4.mp4", "media/auth-login-6.mp4",
-               "media/auth-login-7.mp4"];
+  var clips = [];
+  for (var c = 1; c <= 13; c++) clips.push("media/clip-" + c + ".mp4");
   var layers = [document.getElementById("v0"), document.getElementById("v1")];
   var active = 0, current = -1;
 
