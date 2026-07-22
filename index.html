@@ -6,18 +6,19 @@
 <title>BRAG — your real life</title>
 <meta name="description" content="BRAG is where your real life gets its proof. Boards organize your life. Brags prove the work. Arcs tell the story. Shared with your realest 14, not the world.">
 <meta property="og:title" content="BRAG — your real life">
-<meta property="og:description" content="Wherever there's movement in your life, post about it. Big or small.">
+<meta property="og:description" content="Wherever there's movement in your life — post about it. Big or small.">
 <style>
   :root {
     --canvas: #0a0b0c;
     --surface: #0e0f11;
     --text: #f5f5f5;
-    --text-2: rgba(255,255,255,0.66);
+    --text-2: rgba(255,255,255,0.68);
     --text-3: rgba(255,255,255,0.42);
     --border: rgba(255,255,255,0.08);
     --green: #7ddb9a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     background: var(--canvas);
     color: var(--text);
@@ -25,28 +26,84 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 640px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
 
-  header { padding: 26px 0 0; }
+  /* ---- HERO: the app's login screen, on the web ---- */
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  .hero video.on { opacity: 1; }
+  .scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(10,11,12,0.55) 0%,
+      rgba(10,11,12,0.15) 35%,
+      rgba(10,11,12,0.55) 70%,
+      rgba(10,11,12,0.97) 100%);
+  }
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 24px 0;
+    max-width: 1080px;
+    margin: 0 auto;
+    width: 100%;
+  }
   .wordmark { font-size: 28px; font-weight: 600; letter-spacing: -0.5px; }
-
-  .hero { padding: 96px 0 72px; }
-  .hero h1 {
-    font-size: clamp(40px, 9vw, 64px);
-    line-height: 1.05;
+  .bar .cta-small {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .hero-copy {
+    position: relative;
+    margin-top: auto;
+    padding: 0 24px 64px;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+  .hero-copy h1 {
+    font-size: clamp(42px, 9vw, 72px);
+    line-height: 1.02;
     letter-spacing: -1.5px;
     font-weight: 700;
+    max-width: 640px;
   }
-  .hero h1 span { color: var(--text-3); }
-  .hero p {
-    margin-top: 24px;
+  .hero-copy p {
+    margin-top: 18px;
     font-size: 19px;
     color: var(--text-2);
-    max-width: 480px;
+    max-width: 460px;
   }
   .cta {
     display: inline-block;
-    margin-top: 36px;
+    margin-top: 30px;
     background: #fff;
     color: #000;
     font-weight: 600;
@@ -57,7 +114,19 @@
   }
   .cta-note { display: block; margin-top: 12px; font-size: 13px; color: var(--text-3); }
 
-  .pillars { padding: 24px 0 40px; display: grid; gap: 14px; }
+  /* ---- STORY ---- */
+  .story { padding: 88px 0 8px; }
+  .story h2 {
+    font-size: clamp(26px, 5vw, 34px);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    font-weight: 700;
+    max-width: 560px;
+  }
+  .story h2 span { color: var(--text-3); }
+
+  .pillars { padding: 40px 0 32px; display: grid; gap: 14px; }
+  @media (min-width: 720px) { .pillars { grid-template-columns: 1fr 1fr; } }
   .pillar {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -71,16 +140,17 @@
     text-transform: uppercase;
     font-weight: 600;
   }
-  .pillar h2 { font-size: 21px; margin-top: 6px; font-weight: 600; }
+  .pillar h3 { font-size: 20px; margin-top: 6px; font-weight: 600; letter-spacing: -0.3px; }
   .pillar p { margin-top: 8px; color: var(--text-2); font-size: 15.5px; }
-  .pillar h2 .green { color: var(--green); }
+  .pillar h3 .green { color: var(--green); }
 
-  .manifesto { padding: 56px 0 80px; }
+  .manifesto { padding: 64px 0 88px; }
   .manifesto p {
-    font-size: clamp(22px, 5vw, 30px);
-    line-height: 1.35;
+    font-size: clamp(24px, 5vw, 32px);
+    line-height: 1.3;
     font-weight: 600;
     letter-spacing: -0.5px;
+    max-width: 620px;
   }
   .manifesto p span { color: var(--text-3); }
 
@@ -93,48 +163,64 @@
   footer a { color: var(--text-2); text-decoration: none; margin-right: 20px; }
   footer a:hover { color: var(--text); }
   footer .fine { margin-top: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero video { display: none; }
+  }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <div class="wordmark">brag</div>
-  </header>
+<section class="hero">
+  <video id="v0" autoplay muted loop playsinline></video>
+  <video id="v1" autoplay muted loop playsinline></video>
+  <div class="scrim"></div>
 
-  <section class="hero">
-    <h1>This is BRAG,<br>your real life.<span></span></h1>
-    <p>Wherever there's movement in your life — post about it. Big or small.
-       The gym streak, the first chapter, the burnt dinner that almost worked.
-       Real wins, in a real life, for your realest people.</p>
+  <div class="bar">
+    <div class="wordmark">brag</div>
+    <a class="cta-small" href="mailto:valcavaricci@icloud.com?subject=BRAG%20beta">Get the app</a>
+  </div>
+
+  <div class="hero-copy">
+    <h1>This is BRAG,<br>your real life.</h1>
+    <p>Wherever there's movement in your life — post about it.
+       Big or small. Real wins, in a real life, for your realest people.</p>
     <a class="cta" href="mailto:valcavaricci@icloud.com?subject=BRAG%20beta">Get on the beta</a>
     <span class="cta-note">iPhone · App Store coming soon</span>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="story">
+    <h2>Social media became a highlight reel.
+        <span>BRAG is the opposite: a place to prove you showed up —
+        to the fourteen people who actually care.</span></h2>
   </section>
 
   <section class="pillars">
     <div class="pillar">
       <div class="eyebrow">Boards</div>
-      <h2>Your life has areas. Give them a home.</h2>
-      <p>Gym. Faith. Music. The junk drawer. Boards organize your life the
-         way it actually is — in corners.</p>
+      <h3>Your life has areas. Give them a home.</h3>
+      <p>Gym. Faith. Music. The junk drawer. Boards organize your life
+         the way it actually is — in corners.</p>
     </div>
     <div class="pillar">
       <div class="eyebrow">Brags</div>
-      <h2>Proof over polish.</h2>
-      <p>A brag is a receipt: words, a photo, both. Not a highlight reel —
-         a record that you showed up.</p>
+      <h3>Proof over polish.</h3>
+      <p>A brag is a receipt: words, a photo, both. Not a highlight
+         reel — a record that you showed up.</p>
     </div>
     <div class="pillar">
       <div class="eyebrow">Arcs</div>
-      <h2>Chapters with a finish line.</h2>
-      <p>Chasing something? An arc holds the whole story — every check-in
-         from day one to <span class="green">done</span>.</p>
+      <h3>Chapters with a finish line.</h3>
+      <p>Chasing something? An arc holds the whole story — every
+         check-in from day one to <span class="green">done</span>.</p>
     </div>
     <div class="pillar">
       <div class="eyebrow">The clique</div>
-      <h2>Fourteen people, max.</h2>
-      <p>Your realest people see your real life. No follower counts, no
-         public likes, no performing for strangers. Ever.</p>
+      <h3>Fourteen people, max.</h3>
+      <p>Your realest people see your real life. No follower counts,
+         no public likes, no performing for strangers. Ever.</p>
     </div>
   </section>
 
@@ -149,6 +235,35 @@
     <div class="fine">© 2026 BRAG · Made by Valentino Cavaricci</div>
   </footer>
 </div>
+
+<script>
+  // The login deck, on the web: two stacked layers crossfade through
+  // the clips — random order, never the same twice in a row.
+  var clips = ["media/auth-login-1.mp4", "media/auth-login-3.mp4",
+               "media/auth-login-4.mp4", "media/auth-login-6.mp4",
+               "media/auth-login-7.mp4"];
+  var layers = [document.getElementById("v0"), document.getElementById("v1")];
+  var active = 0, current = -1;
+
+  function nextClip() {
+    var i;
+    do { i = Math.floor(Math.random() * clips.length); } while (i === current);
+    current = i;
+    return clips[i];
+  }
+  function swap() {
+    var incoming = layers[1 - active];
+    incoming.src = nextClip();
+    incoming.play().catch(function () {});
+    incoming.classList.add("on");
+    layers[active].classList.remove("on");
+    active = 1 - active;
+  }
+  layers[0].src = nextClip();
+  layers[0].play().catch(function () {});
+  layers[0].classList.add("on");
+  setInterval(swap, 8000);
+</script>
 
 </body>
 </html>
