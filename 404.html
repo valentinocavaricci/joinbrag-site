@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're invited — BRAG</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="You're invited to BRAG">
+<meta property="og:description" content="Someone saved you a seat on BRAG — your real life, for your realest people.">
+<meta property="og:image" content="https://joinbrag.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<style>
+  :root {
+    --canvas: #0a0b0c;
+    --text: #f5f5f5;
+    --text-2: rgba(255,255,255,0.68);
+    --text-3: rgba(255,255,255,0.42);
+    --green: #7ddb9a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--canvas);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100svh;
+  }
+
+  /* Same full-screen video hero as the homepage */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  .hero video.on { opacity: 1; }
+  .scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(10,11,12,0.55) 0%,
+      rgba(10,11,12,0.15) 35%,
+      rgba(10,11,12,0.55) 70%,
+      rgba(10,11,12,0.97) 100%);
+  }
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 24px 0;
+    max-width: 1080px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .wordmark { display: flex; align-items: center; gap: 12px;
+              font-size: 26px; font-weight: 600; letter-spacing: -0.5px;
+              color: #fff; text-decoration: none; }
+  .wordmark img {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    display: block;
+  }
+
+  /* Centered card area */
+  .hero-copy {
+    position: relative;
+    margin: auto;
+    padding: 32px 24px 56px;
+    max-width: 1080px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* Real glass (07-18 v2): high blur + saturation, light top rim. */
+  .hero-card {
+    background: rgba(18, 20, 24, 0.30);
+    backdrop-filter: blur(34px) saturate(1.6);
+    -webkit-backdrop-filter: blur(34px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 20px 50px rgba(0, 0, 0, 0.35);
+    border-radius: 24px;
+    padding: 28px 26px;
+    max-width: 480px;
+    width: 100%;
+  }
+  .hero-card h1 { font-size: clamp(30px, 5.5vw, 42px); line-height: 1.05;
+                  letter-spacing: -1px; font-weight: 700; }
+  .hero-card p { font-size: 16px; margin-top: 14px; color: var(--text-2); }
+  .shine {
+    background: linear-gradient(100deg, #fff 20%, #9ecbff 40%, #d9a7ff 55%, #fff 75%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 6s ease-in-out infinite;
+  }
+  @keyframes shine {
+    0%, 100% { background-position: 0% 0; }
+    50% { background-position: 100% 0; }
+  }
+
+  /* Inviter row */
+  .inviter { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.08);
+    flex: none;
+  }
+  .avatar-fallback {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.10);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 600; color: #fff;
+    flex: none;
+  }
+  .inviter-meta { min-width: 0; }
+  .inviter-name { font-size: 15px; font-weight: 600; color: #fff;
+                  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .inviter-handle { font-size: 13px; color: var(--text-3); }
+
+  /* Beta form (same as homepage) */
+  .beta-form { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+  .beta-names { display: flex; gap: 10px; }
+  .beta-names input { flex: 1; min-width: 0; }
+  .beta-form input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 999px;
+    padding: 13px 20px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+  }
+  .beta-form input::placeholder { color: rgba(255,255,255,0.5); }
+  .beta-form input:focus { border-color: rgba(255,255,255,0.45); }
+  .beta-form button {
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 20px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+  }
+  .beta-form button:disabled { opacity: 0.6; }
+  .cta-note { display: block; margin-top: 12px; font-size: 13px; color: var(--text-3); }
+
+  /* Plain link-home button for the 404 state */
+  .cta {
+    display: inline-block;
+    margin-top: 24px;
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 26px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero video { display: none; }
+    .shine { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <video id="v0" autoplay muted loop playsinline></video>
+  <video id="v1" autoplay muted loop playsinline></video>
+  <div class="scrim"></div>
+
+  <div class="bar">
+    <a class="wordmark" href="/"><img src="/logo.png" alt="BRAG app icon">brag</a>
+  </div>
+
+  <div class="hero-copy">
+    <div class="hero-card" id="card">
+      <!-- filled by JS -->
+      <h1>One sec…</h1>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ---- Supabase (same publishable key the beta form uses) ----
+  var SUPA_URL = "https://siwmnjiqgzboudnlmrue.supabase.co";
+  var SUPA_KEY = "sb_publishable_eRzxONMN5T99hA8gMB947A_CSv1tHH1";
+
+  // ---- Video background: two layers crossfade through the clips.
+  //      Absolute paths — this file is also served from /i/TOKEN. ----
+  var clips = [];
+  for (var c = 1; c <= 13; c++) clips.push("/media/clip-" + c + ".mp4");
+  var layers = [document.getElementById("v0"), document.getElementById("v1")];
+  var active = 0, current = -1;
+  function nextClip() {
+    var i;
+    do { i = Math.floor(Math.random() * clips.length); } while (i === current);
+    current = i;
+    return clips[i];
+  }
+  function swap() {
+    var incoming = layers[1 - active];
+    incoming.src = nextClip();
+    incoming.play().catch(function () {});
+    incoming.classList.add("on");
+    layers[active].classList.remove("on");
+    active = 1 - active;
+  }
+  layers[0].src = nextClip();
+  layers[0].play().catch(function () {});
+  layers[0].classList.add("on");
+  setInterval(swap, 8000);
+
+  // ---- Helpers ----
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function initialOf(name) {
+    var t = (name || "").trim();
+    return t ? t.charAt(0).toUpperCase() : "★";
+  }
+  var card = document.getElementById("card");
+
+  // ---- The beta form markup (shared by invite + generic states) ----
+  function formHTML(noteText) {
+    return (
+      '<form id="beta" class="beta-form" autocomplete="on">' +
+        '<div class="beta-names">' +
+          '<input type="text" id="beta-first" placeholder="First name" required autocomplete="given-name">' +
+          '<input type="text" id="beta-last" placeholder="Last name" required autocomplete="family-name">' +
+        '</div>' +
+        '<input type="email" id="beta-email" placeholder="you@email.com" required autocomplete="email" inputmode="email">' +
+        '<button type="submit" id="beta-btn">Claim my seat</button>' +
+      '</form>' +
+      '<span class="cta-note" id="beta-note">' + noteText + '</span>'
+    );
+  }
+
+  // ---- Wire up the beta form; carries invite_token when present ----
+  function wireForm(token) {
+    var form = document.getElementById("beta");
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var btn = document.getElementById("beta-btn");
+      var note = document.getElementById("beta-note");
+      var email = document.getElementById("beta-email").value.trim().toLowerCase();
+      var first = document.getElementById("beta-first").value.trim();
+      var last = document.getElementById("beta-last").value.trim();
+      btn.disabled = true;
+      btn.textContent = "One sec…";
+      var row = { email: email, first_name: first, last_name: last };
+      if (token) row.invite_token = token;
+      fetch(SUPA_URL + "/rest/v1/beta_signups", {
+        method: "POST",
+        headers: {
+          "apikey": SUPA_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify([row])
+      }).then(function (r) {
+        if (r.status === 201 || r.status === 409) {
+          form.style.display = "none";
+          note.textContent = "You're in. See you on BRAG.";
+        } else {
+          btn.disabled = false;
+          btn.textContent = "Claim my seat";
+          note.textContent = "Hmm, that didn't take — try again?";
+        }
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = "Claim my seat";
+        note.textContent = "Hmm, that didn't take — try again?";
+      });
+    });
+  }
+
+  // ---- Render states ----
+  function renderInvite(inviter, token) {
+    var name = (inviter && (inviter.display_name || inviter.handle)) || "";
+    var handle = (inviter && inviter.handle) || "";
+    var avatar = (inviter && inviter.avatar_url) || "";
+    var safeAvatar = /^https:\/\//i.test(avatar) ? avatar : "";
+
+    var avatarHTML = safeAvatar
+      ? '<img class="avatar" src="' + esc(safeAvatar) + '" alt="' + esc(name) + '" ' +
+        'onerror="this.outerHTML=&quot;<div class=\\&quot;avatar-fallback\\&quot;>' + esc(initialOf(name)) + '</div>&quot;">'
+      : '<div class="avatar-fallback">' + esc(initialOf(name)) + '</div>';
+
+    var inviterRow = name
+      ? '<div class="inviter">' + avatarHTML +
+          '<div class="inviter-meta">' +
+            '<div class="inviter-name">' + esc(name) + '</div>' +
+            (handle ? '<div class="inviter-handle">@' + esc(handle) + '</div>' : '') +
+          '</div>' +
+        '</div>'
+      : '';
+
+    var headline = name
+      ? '<h1>' + esc(name) + ' saved you a<br><span class="shine">seat on BRAG.</span></h1>'
+      : '<h1>You\'re invited to<br><span class="shine">BRAG.</span></h1>';
+
+    card.innerHTML =
+      inviterRow +
+      headline +
+      '<p>Real wins, in a real life, for your realest people. ' +
+        'Drop your name and email and I\'ll get you into the beta.</p>' +
+      formHTML("iPhone · App Store coming soon");
+    wireForm(token);
+  }
+
+  function renderNotFound() {
+    card.innerHTML =
+      '<h1>Page not found.</h1>' +
+      '<p>That link led somewhere that doesn\'t exist. No worries — ' +
+        'head back to the homepage.</p>' +
+      '<a class="cta" href="/">Go to joinbrag.app</a>';
+  }
+
+  // ---- Route on the path ----
+  // GitHub Pages serves this file for any unmatched URL. If it looks like
+  // an invite link (/i/TOKEN), catch it; otherwise it's a real 404.
+  var m = window.location.pathname.match(/^\/i\/([^\/?#]+)/);
+  if (m) {
+    var token = decodeURIComponent(m[1]);
+    // Show a gentle loading headline while we look up the inviter.
+    card.innerHTML = '<h1>Opening your invite…</h1>';
+    fetch(SUPA_URL + "/rest/v1/rpc/lookup_invite_link", {
+      method: "POST",
+      headers: {
+        "apikey": SUPA_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ t: token })
+    }).then(function (r) {
+      return r.ok ? r.json() : null;
+    }).then(function (data) {
+      // RPC may return a single object or a one-row array.
+      var inviter = Array.isArray(data) ? data[0] : data;
+      renderInvite(inviter || null, token);
+    }).catch(function () {
+      // Network hiccup — still let them join, just not personalized.
+      renderInvite(null, token);
+    });
+  } else {
+    renderNotFound();
+  }
+</script>
+
+</body>
+</html>
