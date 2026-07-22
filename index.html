@@ -127,6 +127,34 @@
   }
   .cta-note { display: block; margin-top: 12px; font-size: 13px; color: var(--text-3); }
 
+  .beta-form { display: flex; gap: 10px; margin-top: 30px; max-width: 440px; flex-wrap: wrap; }
+  .beta-form input {
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 999px;
+    padding: 15px 22px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+  }
+  .beta-form input::placeholder { color: rgba(255,255,255,0.5); }
+  .beta-form input:focus { border-color: rgba(255,255,255,0.45); }
+  .beta-form button {
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 15px 26px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+  }
+  .beta-form button:disabled { opacity: 0.6; }
+
   /* ---- STORY ---- */
   .story { padding: 88px 0 8px; }
   .story h2 {
@@ -198,8 +226,12 @@
     <h1>This is "brag",<br>your real life.</h1>
     <p>Wherever there's movement in your life — post about it.
        Big or small. Real wins, in a real life, for your realest people.</p>
-    <a class="cta" href="mailto:valcavaricci@icloud.com?subject=BRAG%20beta">Get on the beta</a>
-    <span class="cta-note">iPhone · App Store coming soon</span>
+    <form id="beta" class="beta-form" autocomplete="on">
+      <input type="email" id="beta-email" placeholder="you@email.com"
+             required autocomplete="email" inputmode="email">
+      <button type="submit" id="beta-btn">Get on the beta</button>
+    </form>
+    <span class="cta-note" id="beta-note">iPhone · App Store coming soon</span>
   </div>
 </section>
 
@@ -275,6 +307,40 @@
   layers[0].play().catch(function () {});
   layers[0].classList.add("on");
   setInterval(swap, 8000);
+
+  // Beta list → straight into BRAG's own database (insert-only key).
+  var form = document.getElementById("beta");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var btn = document.getElementById("beta-btn");
+    var note = document.getElementById("beta-note");
+    var email = document.getElementById("beta-email").value.trim().toLowerCase();
+    btn.disabled = true;
+    btn.textContent = "One sec…";
+    fetch("https://siwmnjiqgzboudnlmrue.supabase.co/rest/v1/beta_signups", {
+      method: "POST",
+      headers: {
+        "apikey": "sb_publishable_eRzxONMN5T99hA8gMB947A_CSv1tHH1",
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify([{ email: email }])
+    }).then(function (r) {
+      // 201 = in. 409 = already on the list — also in.
+      if (r.status === 201 || r.status === 409) {
+        form.style.display = "none";
+        note.textContent = "You're on the list. Talk soon.";
+      } else {
+        btn.disabled = false;
+        btn.textContent = "Get on the beta";
+        note.textContent = "Hmm, that didn't take — try again?";
+      }
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = "Get on the beta";
+      note.textContent = "Hmm, that didn't take — try again?";
+    });
+  });
 </script>
 
 </body>
