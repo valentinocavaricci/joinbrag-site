@@ -127,10 +127,10 @@
   }
   .cta-note { display: block; margin-top: 12px; font-size: 13px; color: var(--text-3); }
 
-  .beta-form { display: flex; gap: 10px; margin-top: 30px; max-width: 440px; flex-wrap: wrap; }
+  .beta-form { display: flex; flex-direction: column; gap: 10px; margin-top: 30px; max-width: 440px; }
+  .beta-names { display: flex; gap: 10px; }
+  .beta-names input { flex: 1; min-width: 0; }
   .beta-form input {
-    flex: 1;
-    min-width: 200px;
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
     backdrop-filter: blur(12px);
@@ -227,6 +227,12 @@
     <p>Wherever there's movement in your life — post about it.
        Big or small. Real wins, in a real life, for your realest people.</p>
     <form id="beta" class="beta-form" autocomplete="on">
+      <div class="beta-names">
+        <input type="text" id="beta-first" placeholder="First name"
+               required autocomplete="given-name">
+        <input type="text" id="beta-last" placeholder="Last name"
+               required autocomplete="family-name">
+      </div>
       <input type="email" id="beta-email" placeholder="you@email.com"
              required autocomplete="email" inputmode="email">
       <button type="submit" id="beta-btn">Get on the beta</button>
@@ -315,6 +321,8 @@
     var btn = document.getElementById("beta-btn");
     var note = document.getElementById("beta-note");
     var email = document.getElementById("beta-email").value.trim().toLowerCase();
+    var first = document.getElementById("beta-first").value.trim();
+    var last = document.getElementById("beta-last").value.trim();
     btn.disabled = true;
     btn.textContent = "One sec…";
     fetch("https://siwmnjiqgzboudnlmrue.supabase.co/rest/v1/beta_signups", {
@@ -324,7 +332,7 @@
         "Content-Type": "application/json",
         "Prefer": "return=minimal"
       },
-      body: JSON.stringify([{ email: email }])
+      body: JSON.stringify([{ email: email, first_name: first, last_name: last }])
     }).then(function (r) {
       // 201 = in. 409 = already on the list — also in.
       if (r.status === 201 || r.status === 409) {
