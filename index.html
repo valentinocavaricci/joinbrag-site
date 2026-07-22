@@ -108,6 +108,18 @@
     font-weight: 700;
     max-width: 640px;
   }
+  .hero-copy h1 .shine {
+    background: linear-gradient(100deg, #fff 20%, #9ecbff 40%, #d9a7ff 55%, #fff 75%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 6s ease-in-out infinite;
+  }
+  @keyframes shine {
+    0%, 100% { background-position: 0% 0; }
+    50% { background-position: 100% 0; }
+  }
   .hero-copy p {
     margin-top: 18px;
     font-size: 19px;
@@ -173,6 +185,22 @@
     border: 1px solid var(--border);
     border-radius: 18px;
     padding: 24px;
+    transition: transform 0.35s ease, border-color 0.35s ease;
+  }
+  .pillar:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  /* Sections breathe in as you reach them */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
   }
   .pillar .eyebrow {
     font-size: 11px;
@@ -223,7 +251,7 @@
   </div>
 
   <div class="hero-copy">
-    <h1>This is "brag",<br>your real life.</h1>
+    <h1>This is "brag",<br><span class="shine">your real life.</span></h1>
     <p>Wherever there's movement in your life — post about it.
        Big or small. Real wins, in a real life, for your realest people.</p>
     <form id="beta" class="beta-form" autocomplete="on">
@@ -242,32 +270,32 @@
 </section>
 
 <div class="wrap">
-  <section class="story">
+  <section class="story reveal">
     <h2>Social media became a highlight reel.
         <span>BRAG is the opposite: a place to prove you showed up —
         to the fourteen people who actually care.</span></h2>
   </section>
 
   <section class="pillars">
-    <div class="pillar">
+    <div class="pillar reveal">
       <div class="eyebrow">Boards</div>
       <h3>Your life has areas. Give them a home.</h3>
       <p>Gym. Faith. Music. The junk drawer. Boards organize your life
          the way it actually is — in corners.</p>
     </div>
-    <div class="pillar">
+    <div class="pillar reveal">
       <div class="eyebrow">Brags</div>
       <h3>Proof over polish.</h3>
       <p>A brag is a receipt: words, a photo, both. Not a highlight
          reel — a record that you showed up.</p>
     </div>
-    <div class="pillar">
+    <div class="pillar reveal">
       <div class="eyebrow">Arcs</div>
       <h3>Chapters with a finish line.</h3>
       <p>Chasing something? An arc holds the whole story — every
          check-in from day one to <span class="green">done</span>.</p>
     </div>
-    <div class="pillar">
+    <div class="pillar reveal">
       <div class="eyebrow">The clique</div>
       <h3>Fourteen people, max.</h3>
       <p>Your realest people see your real life. No follower counts,
@@ -275,7 +303,7 @@
     </div>
   </section>
 
-  <section class="manifesto">
+  <section class="manifesto reveal">
     <p>Bragging gets a bad name because people brag about fake lives.
        <span>Brag about your real one.</span></p>
   </section>
@@ -313,6 +341,14 @@
   layers[0].play().catch(function () {});
   layers[0].classList.add("on");
   setInterval(swap, 8000);
+
+  // Sections breathe in on approach.
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
 
   // Beta list → straight into BRAG's own database (insert-only key).
   var form = document.getElementById("beta");
