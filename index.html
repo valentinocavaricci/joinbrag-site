@@ -7,6 +7,12 @@
 <meta name="description" content="BRAG is where your real life gets its proof. Boards organize your life. Brags prove the work. Arcs tell the story. Shared with your realest 14, not the world.">
 <meta property="og:title" content="BRAG — your real life">
 <meta property="og:description" content="Wherever there's movement in your life — post about it. Big or small.">
+<meta property="og:image" content="https://joinbrag.app/og.png">
+<meta property="og:url" content="https://joinbrag.app">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <style>
   :root {
     --canvas: #0a0b0c;
@@ -66,7 +72,14 @@
     margin: 0 auto;
     width: 100%;
   }
-  .wordmark { font-size: 28px; font-weight: 600; letter-spacing: -0.5px; }
+  .wordmark { display: flex; align-items: center; gap: 12px;
+              font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
+  .wordmark img {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.14);
+    display: block;
+  }
   .bar .cta-small {
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.18);
@@ -177,7 +190,7 @@
   <div class="scrim"></div>
 
   <div class="bar">
-    <div class="wordmark">brag</div>
+    <div class="wordmark"><img src="/logo.png" alt="BRAG app icon">brag</div>
     <a class="cta-small" href="mailto:valcavaricci@icloud.com?subject=BRAG%20beta">Get the app</a>
   </div>
 
